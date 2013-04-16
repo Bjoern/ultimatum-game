@@ -8,18 +8,22 @@
  * author: Björn Günzel ultimatum-game@blinker.net
  */
 
-(function() {
+function ultimatumGame() {
 
     function log(msg){
         console.log(msg)
     }
 
+    var generationStats = []
+
     var populationSize = 100
     var population = []
 
+    var generation = 0//number of generations / evolve steps taken
+
     var totalGain = 0 //combined worth of the population in the last round
     
-    var mutationRate = 0.1
+    var mutationRate = 0.001// 0.01
 
     //number of encounters to roll per player per step
     //(agents may end up having more encounters than that)
@@ -131,6 +135,9 @@
                 agent.averageGain = agent.worth/agent.playCount
                 totalGain += agent.averageGain
             })
+
+        //remember average gain for visualization
+        generationStats.push([generation, totalGain/populationSize])
     }
 
     function killAgents(){
@@ -208,13 +215,70 @@
         createOffspring()
 
         log("offspring created")
+
+        generation++
+    }
+
+    function visualize(){
+        
+        //log("pop size: "+population.length)
+        var popData = new Array(populationSize)
+        
+        
+        $.each(population, function(i, agent){
+                //log("process agent "+i+": "+agent)
+                popData[i] = [agent.getOffer(), agent.getMinOffer()]
+            })
+        //popData.sort(function(a,b){return a[0]-b[0]})
+        //log("popData: "+popData)
+        //log("popData.length: "+popData.length)
+        var popOptions = {
+            series: {
+                lines: { show: false},
+                points: { show: true }
+            },
+            xaxis: {
+                min: 0,
+                max: 1
+            },
+            yaxis: {
+                min: 0,
+                max: 1
+            }
+
+        }
+        $.plot($("#populationChart"), [{label: "agents", data: popData}], popOptions)
+
+        var evoOptions = {
+            series:{
+                lines: {show: true}
+            },
+            xaxis: {
+                min: 0,
+                max: 1000
+            },
+            yaxis: {
+           //     min: 0,
+           //     max: 100
+            }
+        }
+
+        $.plot($("#evolutionChart"), [{label: "average gain", data: generationStats}], evoOptions)
+    }
+
+    function run(){
+        step()
+        visualize()
+        if(generation < 1000){
+            window.setTimeout(run)
+        }
     }
 
     init()
 
-    for(var n = 0;n < 100;n++){
-        step()
-    }
-})()
+    run()
+}
+
+$(ultimatumGame)
 
 
