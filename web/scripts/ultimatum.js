@@ -10,7 +10,11 @@
 
 (function() {
 
-    var populationSize = 0
+    function log(msg){
+        console.log(msg)
+    }
+
+    var populationSize = 100
     var population = []
 
     var totalGain = 0 //combined worth of the population in the last round
@@ -21,24 +25,24 @@
     //(agents may end up having more encounters than that)
     var encountersPerStep = 10
 
-    var deathsPerStep = 
+    var deathsPerStep = 20
 
     function Agent(gene){
         this.gene = gene
     }
 
-    Agent.prototpye = {
+    Agent.prototype = {
         /*
          * the offer (in %) the agent will make
          */
-        getOffer = function(){
+        getOffer: function(){
             return (this.gene >>> 8)/255
-        }
+        },
 
         /*
          * the minimum offer (in %) the agent will accept
          */
-        getMinOffer = function(){
+        getMinOffer: function(){
             return (this.gene & 0xff)/255
         }
     }
@@ -48,16 +52,22 @@
     }
 
     function init(){
-        
+        log("init")
+
         population = new Array(populationSize)
-        $.map(population, function(agent, i){
-                return new Agent(createRandomGene())
+
+        log("population size: "+population.length)
+
+        $.each(population, function(i, a){
+                var agent = new Agent(createRandomGene())
+                log("created agent "+i+": "+agent.getOffer()+", "+agent.getMinOffer())
+                population[i] = agent
             })
     }
 
     function mate(agent1, agent2){
-        var gene1 = agent.gene
-        var gene2 = agent.gene
+        var gene1 = agent1.gene
+        var gene2 = agent2.gene
 
         var crossover = 1+Math.floor((Math.random()*15))
         var template = Math.pow(2,crossover)-1
@@ -123,9 +133,9 @@
             })
     }
 
-    functions killAgents(){
-        //pick {deathPerStep} agents to die, swap to end of population array
-        for(var deathCount = 0;deathCount < deathPerStep;deathCount++){
+    function killAgents(){
+        //pick {deathsPerStep} agents to die, swap to end of population array
+        for(var deathCount = 0;deathCount < deathsPerStep;deathCount++){
             
             var deathIndex = Math.floor(Math.random()*(populationSize-deathCount))
 
@@ -134,6 +144,8 @@
             population[deathIndex] = population[populationSize - deathCount-1]
 
             population[populationSize - deathCount - 1] = agentToDie
+
+            //log("killed index: "+deathIndex+", agent: "+agentToDie)
 
             totalGain -= agentToDie.averageGain
         }
@@ -167,7 +179,7 @@
 
     function createOffspring(){
         //pick parents with roulette method, create new agents
-        for(var births = 0;births < deathPerStep;births++){
+        for(var births = 0;births < deathsPerStep;births++){
             var parent1 = pickParent()
             var parent2 = pickParent()
 
@@ -179,14 +191,30 @@
 
         initStep()
 
+        log("initialised")
+
         playGames()
+
+        log("games played")
 
         calculateFitness()
 
+        log("fitness calculated, total gain: "+totalGain)
+
         killAgents()
 
+        log("agents killed")
+    
         createOffspring()
+
+        log("offspring created")
     }
-})
+
+    init()
+
+    for(var n = 0;n < 100;n++){
+        step()
+    }
+})()
 
 
