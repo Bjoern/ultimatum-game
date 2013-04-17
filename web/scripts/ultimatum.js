@@ -239,11 +239,13 @@ function ultimatumGame() {
             },
             xaxis: {
                 min: 0,
-                max: 1
+                max: 1,
+                axisLabel: "offer"
             },
             yaxis: {
                 min: 0,
-                max: 1
+                max: 1,
+                axisLabel: "min offer"
             }
 
         }
@@ -255,11 +257,16 @@ function ultimatumGame() {
             },
             xaxis: {
                 min: 0,
-                max: 1000
+                max: 1000,
+                axisLabel: "generation"
             },
             yaxis: {
            //     min: 0,
            //     max: 100
+                axisLabel: "average gain"
+            },
+            legend: {
+                position: "se"
             }
         }
 
