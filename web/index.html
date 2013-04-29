@@ -1,16 +1,50 @@
+<!DOCTYPE html>
 <html>
     <head>
+        <title>Evolved Ultimatum Game</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="scripts/jquery-1.9.1.min.js"></script>
         <script src="scripts/flot/jquery.flot.min.js"></script>
         <script src="scripts/jquery.flot.axislabels.js"></script>
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="scripts/ultimatum.js"></script>
     </head>
     <body>
-        <h1>ultimatum game</h1>
+        <h1>Evolved Ultimatum Game</h1>
         <h2>Population</h2>
-        <div id="populationChart" style="width:600px;height:600px"></div>
-        <h2>Evolution / Fitness per Generation</h2>
-        <div id="evolutionChart" style="width:600px;height:200px"></div>
-        <div id="fitnessDistribution" style="width:600px;height:600px"></div>
+        <div class="row">
+            <div class="span10">
+                <div id="populationChart" style="width:600px;height:600px"></div>
+                <h2>Evolution / Fitness per Generation</h2>
+                <div id="evolutionChart" style="width:600px;height:200px"></div>
+                <div id="fitnessDistribution" style="width:600px;height:600px"></div>
+            </div>
+            <div class="span2">
+                <form class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label" for="populationSize">Population Size</label>
+                        <div class="controls">
+                            <input type="text" id="populationSize" placeholder="100">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="mutationRate">Mutation Rate</label>
+                        <div class="controls">
+                            <input type="password" id="mutationRate" placeholder="0.01">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="btn-group">
+                                <a href="#" class="btn"><i class="icon-play"></i> Play</a>
+                                <a href="#" class="btn"><i class="icon-step-forward"></i> Step</a>
+                                <a href="#" class="btn"><i class="icon-refresh"></i> Refresh</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </body>
 </html>
