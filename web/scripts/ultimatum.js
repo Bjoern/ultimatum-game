@@ -316,7 +316,7 @@ function ultimatumGame() {
             label = "Run"
         }
 
-        $("#runLabel")[0].innerText = label
+        $("#runLabel")[0].innerHTML= label
         $("#runIcon").toggleClass("icon-play", !isRunning)
         $("#runIcon").toggleClass("icon-pause", isRunning)
 
