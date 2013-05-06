@@ -11,39 +11,34 @@
         <script src="scripts/ultimatum.js"></script>
     </head>
     <body>
-        <h1>Evolved Ultimatum Game</h1>
-        <div class="row">
-            <div class="span8">
-                <h2>Population</h2>
-                <div id="populationChart" style="width:600px;height:600px"></div>
-                <h2>Evolution / Fitness per Generation</h2>
-                <div id="evolutionChart" style="width:600px;height:200px"></div>
-                <div id="fitnessDistribution" style="width:600px;height:600px"></div>
-            </div>
-            <div class="span4">
-                <form class="form-horizontal">
-                    <div class="control-group">
-                        <label class="control-label" for="populationSize">Population Size</label>
-                        <div class="controls">
-                            <input type="text" id="populationSize" placeholder="100">
+        <div class="container">
+            <h1>Evolved Ultimatum Game</h1>
+            <div class="row">
+                <div class="span8">
+                    <h4>Population</h4>
+                    <div id="populationChart" style="width:600px;height:600px"></div>
+                    <h4>Evolution / Fitness per Generation</h4>
+                    <div id="evolutionChart" style="width:600px;height:200px"></div>
+                    <div id="fitnessDistribution" style="width:600px;height:600px"></div>
+                </div>
+                <div class="span4">
+                    <h4>Parameters</h4>
+                    <form>
+                        <label for="populationSize">Population Size</label>
+                        <input type="text" id="populationSize" placeholder="100">
+                        <label for="mutationRate">Mutation Rate</label>
+                        <input type="text" id="mutationRate" placeholder="0.001">
+                        <label for="encountersPerStep">Encounters per Step</label>
+                        <input type="text" id="encountersPerStep" placeholder="10">
+                        <label for="deathsPerStep">Deaths per Step in % of population</label>
+                        <input type="text" id="deathsPerStep" placeholder="20">
+                        <div class="btn-group">
+                            <a href="#" class="btn"><i class="icon-play"></i> Run</a>
+                            <a href="#" class="btn"><i class="icon-step-forward"></i> Step</a>
+                            <a href="#" class="btn"><i class="icon-refresh"></i> Reset</a>
                         </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="mutationRate">Mutation Rate</label>
-                        <div class="controls">
-                            <input type="password" id="mutationRate" placeholder="0.001">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <div class="controls">
-                            <div class="btn-group">
-                                <a href="#" class="btn"><i class="icon-play"></i> Run</a>
-                                <a href="#" class="btn"><i class="icon-step-forward"></i> Step</a>
-                                <a href="#" class="btn"><i class="icon-refresh"></i> Reset</a>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </body>
