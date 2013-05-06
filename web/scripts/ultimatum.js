@@ -11,7 +11,7 @@
 function ultimatumGame() {
 
     function log(msg){
-        console.log(msg)
+        //console.log(msg)
     }
 
     var generationStats = []
