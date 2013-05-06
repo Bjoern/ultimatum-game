@@ -11,7 +11,7 @@
 function ultimatumGame() {
 
     function log(msg){
-        //console.log(msg)
+        console.log(msg)
     }
 
     var generationStats = []
@@ -284,6 +284,7 @@ function ultimatumGame() {
     }
 
     function step(){
+        log("step "+generation)
         if(generation < maxGenerations){
             calculateStep()
             visualize()
@@ -298,13 +299,9 @@ function ultimatumGame() {
     }
 
     function toggleRun(){
+        log("toggle run from "+isRunning)
         isRunning = !isRunning
 
-        if(generation == 0){
-            readParameters()
-            initPopulation()
-        }
-       
         labelRunButton()
 
         if(isRunning){
@@ -326,6 +323,8 @@ function ultimatumGame() {
     }
 
     function reset(){
+        log("reset")
+
         isRunning = false
         readParameters()
         initPopulation()
