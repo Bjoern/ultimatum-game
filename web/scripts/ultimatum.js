@@ -11,7 +11,7 @@
 function ultimatumGame() {
 
     function log(msg){
-        console.log(msg)
+        //console.log(msg)
     }
 
     var generationStats = []
@@ -20,6 +20,7 @@ function ultimatumGame() {
     var population = []
 
     var generation = 0//number of generations / evolve steps taken
+    var maxGenerations = 1000 //number of generations to run the simulation
 
     var totalGain = 0 //combined worth of the population in the last round
     
@@ -30,6 +31,9 @@ function ultimatumGame() {
     var encountersPerStep = 10
 
     var deathsPerStep = 20
+
+    //run or pause the simulation
+    var isRunning = false
 
     function Agent(gene){
         this.gene = gene
@@ -55,7 +59,7 @@ function ultimatumGame() {
         return Math.floor(Math.random() * 0xffff)
     }
 
-    function init(){
+    function initPopulation(){
         log("init")
 
         population = new Array(populationSize)
@@ -67,6 +71,11 @@ function ultimatumGame() {
                 log("created agent "+i+": "+agent.getOffer()+", "+agent.getMinOffer())
                 population[i] = agent
             })
+
+        generation = 0
+
+        generationStats = []
+
     }
 
     function mate(agent1, agent2){
@@ -194,7 +203,7 @@ function ultimatumGame() {
         }        
     }
 
-    function step(){
+    function calculateStep(){
 
         initStep()
 
@@ -220,7 +229,8 @@ function ultimatumGame() {
     }
 
     function visualize(){
-        
+        //$("#generation")[0].innerText = generation
+
         //log("pop size: "+population.length)
         var popData = new Array(populationSize)
         
@@ -249,7 +259,7 @@ function ultimatumGame() {
             }
 
         }
-        $.plot($("#populationChart"), [{label: "agents", data: popData}], popOptions)
+        $.plot($("#populationChart"), [{label: "agents in generation "+generation, data: popData}], popOptions)
 
         var evoOptions = {
             series:{
@@ -273,17 +283,85 @@ function ultimatumGame() {
         $.plot($("#evolutionChart"), [{label: "average gain", data: generationStats}], evoOptions)
     }
 
+    function step(){
+        if(generation < maxGenerations){
+            calculateStep()
+            visualize()
+        }
+    }
+
     function run(){
-        step()
-        visualize()
-        if(generation < 1000){
+        if(isRunning && generation < maxGenerations){
+            step()
             window.setTimeout(run)
         }
     }
 
-    init()
+    function toggleRun(){
+        isRunning = !isRunning
 
-    run()
+        if(generation == 0){
+            readParameters()
+            initPopulation()
+        }
+       
+        labelRunButton()
+
+        if(isRunning){
+            run()
+        }
+    }
+
+    function labelRunButton(){
+        var label = "Pause"
+        
+        if(!isRunning){
+            label = "Run"
+        }
+
+        $("#runLabel")[0].innerText = label
+        $("#runIcon").toggleClass("icon-play", !isRunning)
+        $("#runIcon").toggleClass("icon-pause", isRunning)
+
+    }
+
+    function reset(){
+        isRunning = false
+        readParameters()
+        initPopulation()
+        visualize()
+        labelRunButton()
+    }
+
+    function readParameters(){
+        var form = $("#parameters")
+
+        populationSize = parseInt($("#populationSize").val())
+        log("populationSize: "+populationSize)
+
+        maxGenerations = parseInt($("#maxGenerations").val())
+        log("maxGenerations: "+maxGenerations)
+
+        mutationRate = parseFloat($("#mutationRate").val())
+        log("mutationRate: "+mutationRate)
+
+        encountersPerStep = parseInt($("#encountersPerStep").val())
+        log("encountersPerStep: "+encountersPerStep) 
+
+        var deathsPerStepPercent = parseInt($("#deathsPerStep").val())
+        deathsPerStep = Math.floor(populationSize*deathsPerStepPercent/100)
+        log("deathsPerStepPercent: "+deathsPerStepPercent+", deathsPerStep: "+deathsPerStep)
+    }
+
+    $('#toggleRun').click(toggleRun)
+    $('#step').click(step)
+    $('#reset').click(reset)
+
+    labelRunButton()
+
+    initPopulation()
+
+    visualize()
 }
 
 $(ultimatumGame)
