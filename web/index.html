@@ -12,7 +12,7 @@
     </head>
     <body>
         <div class="container">
-            <h1>Evolving Computer Agents Playing The Ultimatum Game</h1>
+            <h1>Evolving Computer Agents To Play The Ultimatum Game</h1>
             <ul class="nav nav-tabs" id="navigation">
                 <li class="active"><a href="#simulation" data-toggle="tab">Simulation</a></li>
                 <li><a href="#description" data-toggle="tab">Description</a></li>
@@ -33,7 +33,7 @@
                         <label for="populationSize">Population Size</label>
                         <input type="text" id="populationSize" value="100">
                         <label for="mutationRate">Mutation Rate</label>
-                        <input type="text" id="mutationRate" value="0.001">
+                        <input type="text" id="mutationRate" value="0.01">
                         <label for="encountersPerStep">Encounters per Step</label>
                         <input type="text" id="encountersPerStep" value="10">
                         <label for="deathsPerStep">Deaths per Step in % of population</label>
@@ -51,7 +51,39 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="description">
-                    <h4>Description</h4>
+                    <h4>Ultimatum Game</h4>
+                    <p>
+                    In the Ultimatum Game two players have to split a chunk of money. One player makes an offer to the other player. If the other player accept the offer, the money is split between them accordingly. If he rejects, both players get nothing. Economists tend to be confused about the fact that humans ever reject offers, as it seems rational to always choose any money over no money at all. It seems people prefer to forego the money to punish players making offers they perceive as unfair, so in real world experiments bad offers are routinely being rejected (according to <a href="https://en.wikipedia.org/wiki/Ultimatum_game">Wikipedia</a> in Western Industrialized cultures people tend to offer 50:50 splits and reject offers of less than 20%).
+                    </p>
+                    <h4>Evolving Computer Agents</h4>
+                    <p>
+                    Since the behavior of human players seems so irrational, it seemed like a fun idea to see what a computer would evolve as an optimal strategy for playing the Ultimatum Game. This is a just for fun project for Dan Ariely's Course course <a href="https://class.coursera.org/behavioralecon-001/class/index">A Beginner's Guide to Irrational Behavior</a>. 
+                    </p>
+                    <p>
+                    A computer agent in this simulation consists of just two numbers: the <i>offer</i> (in %) the agent would make if it were chosen to make an offer in the Ultimatum Game, and the <i>minimum offer</i> (in %) the agent would accept in an Ultimatum Game. The simulation seeds a <i>population</i> with agents that have random values for <i>offer</i> and <i>minimum offer</i> and lets them play Ultimatum Games against each other. Each agent plays <i>Encounters per Step</i> (configurable) games against randomly selected other agents. In each game it is randomly decided who gets to make the offer and who is on the receiving end. The average gains of every agent is their fitness and decides the likelihood that they will have offspring in the next round. <i>Deaths per Step in % of population</i> (configurable) randomly selected agents die each round and are replaced by offspring of two parents that are selected with probability proportional to their fitness.
+                    </p>
+                    <h4>Genetic Algorithm</h4>
+                    <p>
+                    The way the computer evolves the agent is a run off the mill genetic algorithm: the <i>offer</i> and <i>minimum offer</i> are being encoded as 8 bit binary numbers (ranging between 0 and 255), the gene is the sequence of those two numbers. So for example the sequence 01100100 10010101 would encode the percentages 100/255 ~= 39.2% (offer) and 149/255 ~= 58.4% (minimum offer), because 01100100 encodes the number 100 in binary and 10010101 encodes the number 149. The fitness for the agent in each generation is determined as described in the previous paragraph (average gains over all games the agent played in that iteration). Parents for offspring are selected proportional to their fitness - like a roulette wheel where the size of the fields is proportional to agent fitness, P(agent will be parent) = average_gain(parent)/sum_average_gains_all_agents.
+                    </p>
+                    <p>Offspring is then created by choosing a random crossover point n (0 &lt; n &lt 16) in the gene and using the first n bits of the first parent and the (16-n) last bits of the second parent. Every bit of the resulting new "gene" is also flipped with probability of the <i>Mutation Rate</i> (configurable).
+                    </p>
+                    <p>
+                    Example: parent1: 0110010010010101 parent2: 1110110000110101 with crossover at point 6 would result in offspring:0110010000110101, of which some bits might be flipped by mutation.
+                    </p>
+                    <h4>Findings</h4>
+                    <p>
+                    I initially miscalculated the impact of the mutation rate and made most runs with a very low mutation rate of 0.001 (0.1%). In those scenarios the population tended to converge on spots between offering from 10% to 30% and accepting all such offers. As could have been obvious without actually running simulations, any offer/min offer combination in which every offer is accepted can be an equilibrium point: since every agent offers and receives, on average all agents have the same gain. As an extreme example: even a population in which all agents offer 0% and accept 0% (the player offering keeps all the money), all agents would end up with the theoretical maximum of 50% gains on average.
+                    </p>
+                    <p>
+                    Unfortunately since I discovered the mutation rate miscalculation too late, I didn't have much time to test other scenarios. Also, a suitable visualization still needs to be done. Average gain doesn't tell the whole story, it would be more interesting to see the wealth distribution in the population. I envision coloring the dots according to fitness and adding a fitness distribution chart. Still, since parasites (agents offering less than their minimum accept offer) would tend to have higher fitness than other agents, it seems likely that over time they would be brought down to an equilibrium similiar to the case with the low mutation rate.
+                    </p>
+                    <p>
+                    Of course it is a bit difficult to draw conclusions from this simulation, as there are so many factors that can affect the outcome. For example the genetic encoding introduces a bias for certain numbers that are more likely to survive the mating than others. Still, it might be worthwhile to show that even a non-irrational process could produce agents that act fairly. Or, if it turns out that the genetic algorithm doesn't produce fair agents, it could become a good tool for studying what factors have to exist to make the evolution of fair agents possible.
+                    </p>
+                    <p>
+                    I hope to play around with this some more after the final exams of the course, which will preoccupy my time for the coming week.
+                    </p>
                 </div>
             </div>
         </div>

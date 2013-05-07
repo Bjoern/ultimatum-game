@@ -24,7 +24,7 @@ function ultimatumGame() {
 
     var totalGain = 0 //combined worth of the population in the last round
     
-    var mutationRate = 0.001// 0.01
+    var mutationRate = 0.01// 0.01
 
     //number of encounters to roll per player per step
     //(agents may end up having more encounters than that)
