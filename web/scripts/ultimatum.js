@@ -11,7 +11,7 @@
 function ultimatumGame() {
 
     function log(msg){
-        console.log(msg)
+       // console.log(msg)
     }
 
     var generationStats = []
@@ -267,7 +267,7 @@ function ultimatumGame() {
             },
             xaxis: {
                 min: 0,
-                max: 1000,
+                max: maxGenerations,
                 axisLabel: "generation"
             },
             yaxis: {
