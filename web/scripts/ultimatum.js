@@ -338,6 +338,11 @@ function ultimatumGame() {
         labelRunButton()
 
         if(isRunning){
+            if(generation == 0){
+                readParameters()
+                initPopulation()
+                visualize()
+            }
             run()
         }
     }
@@ -389,11 +394,7 @@ function ultimatumGame() {
     $('#step').click(step)
     $('#reset').click(reset)
 
-    labelRunButton()
-
-    initPopulation()
-
-    visualize()
+    reset()
 }
 
 $(ultimatumGame)

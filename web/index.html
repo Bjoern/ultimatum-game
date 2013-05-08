@@ -20,13 +20,13 @@
             <div class="tab-content">
                 <div class="row tab-pane active" id="simulation">
                     <div class="span8">
-                        <h4>Population</h4>
+                        <h4 id="popChart">Population</h4>
                         <p>
                         <!--Generation: <span id="generation">0</span>-->
                         <div id="populationChart" style="width:600px;height:600px"></div>
-                        <h4>Fitness Distribution</h4>
+                        <h4 id="fitChart">Fitness Distribution</h4>
                         <div id="fitnessDistribution" style="width:600px;height:200px"></div>
-                        <h4>Evolution / Fitness per Generation</h4>
+                        <h4 id="evoChart">Evolution / Fitness per Generation</h4>
                         <div id="evolutionChart" style="width:600px;height:200px"></div>
                     </div>
                     <div class="span4">
@@ -47,7 +47,14 @@
                         <div class="btn-group">
                             <button id="toggleRun" class="btn"><i id="runIcon" class="icon-play"></i> <span id="runLabel">Run</span></button>
                             <button id="step" class="btn"><i class="icon-step-forward"></i> Step</button>
-                            <button id="reset" class="btn"><i class="icon-refresh"></i> Restart</button>
+                            <button id="reset" class="btn"><i class="icon-refresh"></i> Reset</button>
+                        </div>
+                        <div>
+                            <h4>Charts available:</h4>
+                            <p>
+                                <a href="#popChart">Population</a>, <a href="#fitChart">Fitness Distribution</a>,
+                                <a href="#evoChart">Fitness Evolution</a>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -77,7 +84,7 @@
                     I initially miscalculated the impact of the mutation rate and made most runs with a very low mutation rate of 0.001 (0.1%). In those scenarios the population tended to converge on spots between offering from 10% to 30% and accepting all such offers. As could have been obvious without actually running simulations, any offer/min offer combination in which every offer is accepted can be an equilibrium point: since every agent offers and receives, on average all agents have the same gain. As an extreme example: even a population in which all agents offer 0% and accept 0% (the player offering keeps all the money), all agents would end up with the theoretical maximum of 50% gains on average.
                     </p>
                     <p>
-                    Unfortunately since I discovered the mutation rate miscalculation too late, I didn't have much time to test other scenarios. Also, a suitable visualization still needs to be done. Average gain doesn't tell the whole story, it would be more interesting to see the wealth distribution in the population. I envision coloring the dots according to fitness and adding a fitness distribution chart. Still, since parasites (agents offering less than their minimum accept offer) would tend to have higher fitness than other agents, it seems likely that over time they would be brought down to an equilibrium similiar to the case with the low mutation rate.
+                    Unfortunately since I discovered the mutation rate miscalculation too late, I didn't have much time to test other scenarios. Also, the visualization still needs to be improved. Average gain doesn't tell the whole story, the fitness distribution chart was only added in the last minute and I could not really look at the results yet. I envision coloring the dots according to fitness and adding a fitness distribution chart. Still, since parasites (agents offering less than their minimum accept offer) would tend to have higher fitness than other agents, it seems likely that over time they would be brought down to an equilibrium similiar to the case with the low mutation rate.
                     </p>
                     <p>
                     Of course it is a bit difficult to draw conclusions from this simulation, as there are so many factors that can affect the outcome. For example the genetic encoding introduces a bias for certain numbers that are more likely to survive the mating than others. Still, it might be worthwhile to show that even a non-irrational process could produce agents that act fairly. Or, if it turns out that the genetic algorithm doesn't produce fair agents, it could become a good tool for studying what factors have to exist to make the evolution of fair agents possible.
