@@ -11,10 +11,11 @@
 function ultimatumGame() {
 
     function log(msg){
-       // console.log(msg)
+        //console.log(msg)
     }
 
     var generationStats = []
+    var distribution = new Array(100) //for distribution chart
 
     var populationSize = 100
     var population = []
@@ -138,11 +139,22 @@ function ultimatumGame() {
 
     //calulate fitness as average gain per game
     function calculateFitness(){
+
+        $.each(distribution, function(i, distriPoint){
+                distribution[i] = [i,0]
+            })
+
+
         totalGain = 0
 
         $.each(population, function(index, agent){
                 agent.averageGain = agent.worth/agent.playCount
                 totalGain += agent.averageGain
+
+                //keep track of distribution
+                var gain = Math.floor(agent.averageGain)
+                log("distribution - gain: "+gain+", count :"+distribution[gain])
+                distribution[gain][1]++  
             })
 
         //remember average gain for visualization
@@ -234,7 +246,6 @@ function ultimatumGame() {
         //log("pop size: "+population.length)
         var popData = new Array(populationSize)
         
-        
         $.each(population, function(i, agent){
                 //log("process agent "+i+": "+agent)
                 popData[i] = [agent.getOffer(), agent.getMinOffer()]
@@ -281,6 +292,28 @@ function ultimatumGame() {
         }
 
         $.plot($("#evolutionChart"), [{label: "average gain", data: generationStats}], evoOptions)
+
+
+        //distribution of gain
+        var distriOptions = {
+            series: {
+                bars: {show: true},
+                lines: { show: false},
+                points: { show: false}
+            },
+            xaxis: {
+                min: 0,
+                max: 100,
+                axisLabel: "average gain"
+            },
+            yaxis: {
+                min: 0,
+                axisLabel: "agents count"
+            }
+
+        }
+        $.plot($("#fitnessDistribution"), [{label: "fitness distribution", data: distribution}], distriOptions)
+
     }
 
     function step(){
